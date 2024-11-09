@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Vue Basics</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+</head>
+<body>
+    <nav :class="navbarClasses" class="navbar navbar-expand-lg">
+    <!-- <nav :class="{ 'navbar-light bg-light': !useDarkNavbar, 'navbar-dark bg-dark': useDarkNavbar }" class="navbar navbar-expand-lg"> -->
+        <div class="container-fluid">
+            <a href="#" class="navbar-brand">My Vue</a>
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <!-- <li class="nav-item">
+                    <a href="#" class="nav-link" aria-current="page">{{ links[0] }}</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link" aria-current="page">{{ links[1] }}</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link" aria-current="page">{{ links[2] }}</a>
+                </li> -->
+
+                <li v-for="(page, index) in pages" class="nav-item" :key="idex">
+                    <a 
+                        class="nav-link"
+                        :class="{ active: activePage == index }"
+                        aria-current="page"
+                        v-bind:href='page.link.url'
+                        :title="`This link goes to the ${page.link.text} page`"
+                        @click.prevent="activePage = index"
+                        >
+                        {{ page.link.text }}
+                    </a>
+                </li>
+                <!-- @click="" -->
+                <!-- v-on:click="" -->
+                <!-- onclick="" -->
+
+                <!-- 
+                :class="{ active: activePage == index }" 
+                a classe active vai se adicionada se a activePage for igual ao index
+                -->
+                
+
+                <!-- v-bind é o mesmo que : -->
+            </ul>
+
+            <form class="d-flex">
+                <button class="btn btn-primary" @click.prevent="useDarkNavbar = !useDarkNavbar">Toggle Navbar</button>
+            </form>
+        </div>
+    </nav>
+    
+    <div id="content" class="container">
+        <h1>{{ pages[activePage].pageTitle }}</h1>
+        <p>{{ pages[activePage].pageContent }}</p>
+    </div>
+
+
+    <script>
+        Vue.createApp({
+            computed: {
+                navbarClasses() {
+                    return {
+                        'bg-light': !this.useDarkNavbar,
+                        'navbar-light': !this.useDarkNavbar,
+                        'bg-dark': this.useDarkNavbar,
+                        'navbar-dark': this.useDarkNavbar
+                    }
+                }
+            },
+            data() {
+                return {
+                    activePage: 0,
+                    useDarkNavbar: false,
+                    pages: [
+                        {
+                            link: {text: 'Home', url: 'home.html'},               
+                            pageTitle: "Home Page",
+                            pageContent: "This is the home content"
+                        },
+                        {
+                            link: {text: 'About', url: 'about.html'},
+                            pageTitle: "About Page",
+                            pageContent: "This is the about content"
+                        },
+                        {
+                            link: {text: 'Contact', url: 'contact.html'},
+                            pageTitle: "Contact Page",
+                            pageContent: "This is the contact content"
+                        }
+                    ]
+                };
+            }
+        }).mount('body');
+    </script>
+</body>
+</html>
